@@ -44,32 +44,8 @@ function addCharacterToList(characterName) {
     }
 }
 
-// 添加生成随机角色按钮
-function addGenerateCharacterButton() {
-    const characterList = document.querySelector('.character-list');
-    if (characterList) {
-        // 检查是否已经存在按钮
-        if (document.querySelector('.generate-character-container')) {
-            return;
-        }
-        
-        const generateButtonContainer = document.createElement('div');
-        generateButtonContainer.className = 'generate-character-container';
-        generateButtonContainer.style.marginTop = '20px';
-        generateButtonContainer.style.textAlign = 'center';
-        
-        const generateButton = document.createElement('button');
-        generateButton.className = 'btn';
-        generateButton.textContent = '遇见新角色';
-        generateButton.onclick = generateRandomCharacter;
-        
-        generateButtonContainer.appendChild(generateButton);
-        characterList.appendChild(generateButtonContainer);
-    }
-}
-
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // 添加生成随机角色按钮
-    addGenerateCharacterButton();
+    // 初始化角色相关功能
+    console.log('角色功能已初始化');
 });

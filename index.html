@@ -211,7 +211,7 @@
 <div class="navigation-buttons">
     <button class="nav-btn" onclick="cultivate()">修炼</button>
     <button class="nav-btn" onclick="rest()">休息</button>
-    <button class="nav-btn" onclick="skipYear()">跳过一年</button>
+    <button class="nav-btn" onclick="explore()">探索</button>
 </div>
             </div>
         </div>
@@ -223,39 +223,82 @@
                 <h2 class="title">地图与事件</h2>
                 
                 <div class="map-events-container">
-                                         <!-- 地图区域 -->
+                     <!-- 地图区域 -->
                      <div class="map-section">
-                         <h3>已探索地点</h3>
+                         <h3>地图</h3>
                          <div class="location-list">
-                             <!-- 药王谷 -->
+                             <!-- 东洲 - 已知 -->
                              <div class="location-group">
-                                 <div class="location-parent" onclick="toggleLocation('yaowanggu')">
-                                     <strong>药王谷</strong>
+                                 <div class="location-parent" onclick="toggleLocation('dongzhou')">
+                                     <strong>东洲</strong>
                                      <span class="toggle-icon">▼</span>
                                  </div>
-                                 <div class="location-children" id="yaowanggu-children">
-                                     <div class="location-item" onclick="travelTo('药王谷-东山')">
-                                         <strong>东山</strong>
-                                         <span>体力消耗：1</span>
-                                     </div>
-                                     <div class="location-item" onclick="travelTo('药王谷-师傅')">
-                                         <strong>师傅住处</strong>
-                                         <span>体力消耗：1</span>
+                                 <div class="location-children" id="dongzhou-children">
+                                     <!-- 百草山脉 - 已知 -->
+                                     <div class="location-group" style="margin-left: 20px;">
+                                         <div class="location-parent" onclick="toggleLocation('baicaoshanmai')">
+                                             <strong>百草山脉</strong>
+                                             <span class="toggle-icon">▼</span>
+                                         </div>
+                                         <div class="location-children" id="baicaoshanmai-children">
+                                             <!-- 药王谷 - 已知 -->
+                                             <div class="location-item" onclick="travelTo('药王谷')">
+                                                 <strong>药王谷</strong>
+                                                 <span>体力消耗：2</span>
+                                             </div>
+                                         </div>
                                      </div>
                                  </div>
                              </div>
                              
-                             <!-- 十万大山 -->
+                             <!-- 西漠 - 未知 -->
                              <div class="location-group">
-                                 <div class="location-parent" onclick="toggleLocation('shiwandashan')">
-                                     <strong>十万大山</strong>
+                                 <div class="location-parent">
+                                     <strong>未知</strong>
+                                 </div>
+                             </div>
+                             
+                             <!-- 南荒 - 未知 -->
+                             <div class="location-group">
+                                 <div class="location-parent">
+                                     <strong>未知</strong>
+                                 </div>
+                             </div>
+                             
+                             <!-- 北地 - 已知 -->
+                             <div class="location-group">
+                                 <div class="location-parent" onclick="toggleLocation('beidi')">
+                                     <strong>北地</strong>
                                      <span class="toggle-icon">▼</span>
                                  </div>
-                                 <div class="location-children" id="shiwandashan-children">
-                                     <div class="location-item" onclick="travelTo('十万大山-狼妖家')">
-                                         <strong>狼妖家</strong>
-                                         <span>体力消耗：3</span>
+                                 <div class="location-children" id="beidi-children">
+                                     <!-- 观星崖 - 已知 -->
+                                     <div class="location-group" style="margin-left: 20px;">
+                                         <div class="location-parent" onclick="toggleLocation('guanxingya')">
+                                             <strong>观星崖</strong>
+                                             <span class="toggle-icon">▼</span>
+                                         </div>
+                                         <div class="location-children" id="guanxingya-children">
+                                             <!-- 星机阁 - 已知 -->
+                                             <div class="location-item" onclick="travelTo('星机阁')">
+                                                 <strong>星机阁</strong>
+                                                 <span>体力消耗：2</span>
+                                             </div>
+                                         </div>
                                      </div>
+                                     <!-- 魔域 - 未知 -->
+                                     <div class="location-group" style="margin-left: 20px;">
+                                         <div class="location-parent">
+                                             <strong>未知</strong>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             
+                             <!-- 中州 - 未知 -->
+                             <div class="location-group">
+                                 <div class="location-parent">
+                                     <strong>未知</strong>
                                  </div>
                              </div>
                          </div>
@@ -390,6 +433,7 @@
     <script src="character-generator.js"></script>
     <script src="character-data.js"></script>
     <script src="character-functions.js"></script>
+    <script src="world-map.js"></script>
     <script src="script-fixed.js"></script>
     <!-- 修改故事区域文本堆叠逻辑 -->
     <script>
@@ -507,6 +551,9 @@
             if (data) {
                 const save = JSON.parse(data);
                 if (save.gameState) {
+                    // 清空故事列表，确保每个存档有独立的文本内容
+                    localStorage.removeItem('storyList');
+                    
                     // 完全替换gameState而不是合并
                     gameState = JSON.parse(JSON.stringify(save.gameState));
                     
@@ -532,6 +579,9 @@
                 const save = JSON.parse(data);
                 // 正确加载存档数据
                 if (save.gameState) {
+                    // 清空故事列表，确保每个存档有独立的文本内容
+                    localStorage.removeItem('storyList');
+                    
                     // 完全替换gameState
                     gameState = JSON.parse(JSON.stringify(save.gameState));
                     
@@ -583,7 +633,7 @@ function openApiSettingsFromInfo() {
         backBtn.onclick = function() { showPage('game-main'); };
     }
 }
-// 保证从主菜单进入设置时仍为“返回主菜单”
+// 保证从主菜单进入设置时仍为"返回主菜单"
 document.addEventListener('DOMContentLoaded', function() {
     const backBtn = document.querySelector('#settings .back-btn');
     if (backBtn) {

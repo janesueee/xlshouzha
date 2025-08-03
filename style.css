@@ -538,12 +538,28 @@ body::before {
     padding: 18px;
     overflow-y: auto;
     background: rgba(255, 255, 255, 0.8);
+    height: 300px; /* 固定高度 */
+    max-height: 50vh; /* 响应式最大高度 */
 }
 
 #story-content {
     line-height: 1.7;
     color: #5a4a3a;
     font-size: 1rem;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+/* 故事条目样式 */
+.story-entry {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(196, 180, 152, 0.3);
+}
+
+.story-entry:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
 }
 
 .interaction-area {
@@ -916,7 +932,7 @@ body::before {
     color: #8B4513;
     display: block;
     margin-bottom: 4px;
-    font-size: 1rem;
+    font-size: 0.85rem; /* 调小字号，避免角色名称换行 */
 }
 
 .relationship-item p {
